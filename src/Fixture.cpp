@@ -7,15 +7,10 @@ Fixture::Fixture(string filepath, Teams *teams)
     this->filepath = filepath;
     this->teams = teams;
 }
-void Fixture::addToFixture(string localId, string visitId, long double distance, bool second = false)
+void Fixture::addToFixture(string localId, string visitId, long double distance)
 {
     string id = localId + "VS" + visitId;
     string altId = visitId + "VS" + localId;
-    if (second)
-    {
-        id += "s";
-        altId += "s";
-    }
     if (this->fixture.find(id) != this->fixture.end() || this->fixture.find(altId) != this->fixture.end())
         return;
     Date matchDate;
@@ -103,13 +98,11 @@ void Fixture::write()
             auto distance = match.distance;
             auto local = teams.at(match.visitId);
             auto visit = teams.at(match.localId);
-            cout << "indicator: " << indicator << endl;
             Date fDate;
             fDate.setDate(this->lastDate.getDate());
             fDate.addDays(indicator);
             auto lDate = fDate.getDate();
             char *date = ctime(&lDate);
-            cout << "date: " << date << endl;
             string strDistance = to_string(distance);
             std::string strDate(date);
             string line = "\"" + strDate + "\";\"" + local.getName() + "\";\"" + visit.getName() + "\";\"" + strDistance + "\"";
